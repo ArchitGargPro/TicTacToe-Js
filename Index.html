@@ -1,0 +1,219 @@
+<html>
+<head>
+	<title>
+		Tic Tac Toe
+	</title>
+	<script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+	<div class="input">
+		<h1>Enter your details</h1>
+		Player1 : <input type="text" name="player1"><br>
+		Player2 : <input type="text" name="player2"><br>
+		<input type="button" name="play" value="Start Game" onclick="play()">
+		<hr>
+	</div>
+	<div class="game">
+		<h4>Player 1 (O): <span id="name1"></span></h4>
+		<h4>Player 2 (X): <span id="name2"></span></h4>
+		<div class="matrix">
+			<input id="tic" type="button" name="0" value="&nbsp&nbsp&nbsp" onclick="playGame(0)">
+			<input id="tic" type="button" name="1" value="&nbsp&nbsp&nbsp" onclick="playGame(1)">
+			<input id="tic" type="button" name="2" value="&nbsp&nbsp&nbsp" onclick="playGame(2)"><br>
+			<input id="tic" type="button" name="3" value="&nbsp&nbsp&nbsp" onclick="playGame(3)">
+			<input id="tic" type="button" name="4" value="&nbsp&nbsp&nbsp" onclick="playGame(4)">
+			<input id="tic" type="button" name="5" value="&nbsp&nbsp&nbsp" onclick="playGame(5)"><br>
+			<input id="tic" type="button" name="6" value="&nbsp&nbsp&nbsp" onclick="playGame(6)">
+			<input id="tic" type="button" name="7" value="&nbsp&nbsp&nbsp" onclick="playGame(7)">
+			<input id="tic" type="button" name="8" value="&nbsp&nbsp&nbsp" onclick="playGame(8)">
+		</div>
+		<br>
+		<h3 id="status">your turn => <span id="currPlayer"></span></h3>
+		<input type="button" name="reset" value="RESET" onclick="reset()">
+		<input type="button" name="undo" value="UNDO" onclick="undo()">
+		<input type="button" name="newGame" value="New Game" onclick="newGame()">
+	</div>
+	<script type="text/javascript">
+		var player1;
+		var player2;
+		var winner = 0;
+		var len = 1;
+		var currPlayer = 0;
+		var names = new Array();
+		var OX = ['O', 'X'];
+		var winCases = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+		var chances = [0,0,0,0,0,0,0,0,0];
+		var stack;
+
+		window.onload = newGame();
+
+		function newGame(){
+			document.querySelector('div[class=input]').style.display= 'Block';
+			document.querySelector('div[class=game]').style.display= 'None';
+		}
+
+		function play(){
+			var validatePr = new Promise((res, rej) => {
+				if(validate()){
+					res(1);
+				} else {
+					rej(0);
+				}
+			});
+
+			validatePr.then((result) => {
+				if(result==1){
+					reset();
+				} else {
+					alert('here');
+				}
+			}).catch((e) => {
+				alert(`
+					Enter valid player name. 
+					It should be longer than ${len} characters
+					Player name cannot not be same`);
+			});
+		}
+
+		function validate(){
+			var c = true;
+			player1 = document.querySelector('input[name=player1]').value;
+			player2 = document.querySelector('input[name=player2]').value;
+			// if(player1.length<len || player2.length<len || player1==player2){
+			// 	c = false;
+			// }
+			return c;
+		}
+		function reset(){
+			document.querySelector('div[class=input]').style.display= 'None';
+			currPlayer = 0;
+			winner = 0;
+			chances = [0,0,0,0,0,0,0,0,0];
+			stack = new Array();
+			for(var i=0; i<9; i++){
+				document.querySelector('[name="'+i+'"]').value = '  ';
+			}
+			setNames(showCurrent);
+			document.querySelector('div[class=game]').style.display= 'Block';
+
+			return true;
+		}
+
+		function showCurrent(){
+			document.getElementById('status').innerHTML = "your turn => <span id=\"currPlayer\">";
+			document.getElementById('currPlayer').innerHTML= names[currPlayer];
+		}
+
+		function changePlayer(){
+			if(currPlayer==1){
+				currPlayer = 0;
+			} else {
+				currPlayer = 1;
+			}
+		}
+
+		function setNames(callback){
+			document.getElementById('name1').innerHTML= player1;
+			document.getElementById('name2').innerHTML= player2;
+			names = new Array();
+			names.push(player1);
+			names.push(player2);
+			callback();
+		}
+
+		function playGame(selectedBlockNo){
+			if(chances[selectedBlockNo]==0 && winner==0){
+
+				// saving he move
+				chances[selectedBlockNo] = currPlayer+1;
+				stack.push(selectedBlockNo);
+
+				document.querySelector('[name="'+selectedBlockNo+'"]').value = OX[currPlayer];
+
+				// checking for winner
+				var check = new Promise((resolve, reject) => {
+					resolve(win());
+				});
+				check.then(function(result) {
+					var temp = -1; // return -1 if game continues
+					if(result==1) {
+						temp = currPlayer+1;  //return player no. if win
+					} else if(stack.length == 9){
+						temp = 0;	//return 0 if draw
+					} 
+					return temp;
+				})
+				.then(function(result){
+					switch(result){
+						case 0 : // Declare Draw
+							document.getElementById('status').innerHTML = "Oh! It's a Draw <span id=\"currPlayer\">";
+							changePlayer();
+							break;
+						case 1 : // player 1 won
+							document.getElementById('status').innerHTML = names[0]+" won";
+							changePlayer();
+							endGame();
+							break;
+						case 2 : // player 2 won
+							document.getElementById('status').innerHTML = names[1]+" won";
+							changePlayer();
+							endGame();
+							break;
+						default : //continue playing
+							// changing the current player
+							changePlayer();
+							showCurrent();
+							break;
+					}
+				});
+			}
+		}
+
+		function win(){
+			// check win status, return 1 if win
+			var status = 0;
+			for(var i=0; i<8; i++){
+				if(chances[winCases[i][0]]==1 && chances[winCases[i][1]]==1 && chances[winCases[i][2]]==1){
+					status = 1;
+					break;
+				} else if(chances[winCases[i][0]]==2 && chances[winCases[i][1]]==2 && chances[winCases[i][2]]==2){
+					status = 1;
+					break;
+				}
+			}
+			return status;
+		}
+
+		function endGame(){
+			winner=1;
+		}
+
+		function undo(){
+			// change variables
+			// change Text.s
+			var reverse = new Promise((resolve, reject) => {
+				var box;
+				if(stack.length == 0){
+					box = -1;	// -1 if empty
+				} else{
+					changePlayer();
+					winner = 0;
+					box = stack.pop();
+					chances[box] = 0;
+				}
+				resolve(box);
+			});
+
+			reverse.then(function(result){
+				if(result == -1){
+					alert('already empty');
+				} else {
+					showCurrent();
+					document.querySelector('[name="'+result+'"]').value = "  ";
+				}
+			})
+		}
+	</script>
+</body>
