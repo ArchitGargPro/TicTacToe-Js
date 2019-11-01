@@ -72,7 +72,7 @@
 			}).catch((e) => {
 				alert(`
 					Enter valid player name. 
-					It should be longer than ${len} characters
+					It should be longer than ${len} characters &
 					Player name cannot not be same`);
 			});
 		}
@@ -81,9 +81,9 @@
 			var c = true;
 			player1 = document.querySelector('input[name=player1]').value;
 			player2 = document.querySelector('input[name=player2]').value;
-			// if(player1.length<len || player2.length<len || player1==player2){
-			// 	c = false;
-			// }
+			if(player1.length<len || player2.length<len || player1==player2){
+				c = false;
+			}
 			return c;
 		}
 		function reset(){
