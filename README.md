@@ -6,3 +6,4 @@
 - ```UNDO``` a move
 
 ##### All using JavaScript
+###### With beautiful colours & design using CSS
