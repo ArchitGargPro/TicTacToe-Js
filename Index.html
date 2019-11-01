@@ -3,37 +3,45 @@
 	<title>
 		Tic Tac Toe
 	</title>
-	<script type="text/javascript">
-		
-	</script>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<div class="input">
-		<h1>Enter your details</h1>
-		Player1 : <input type="text" name="player1"><br>
-		Player2 : <input type="text" name="player2"><br>
-		<input type="button" name="play" value="Start Game" onclick="play()">
+		<h1 style="text-align: center; margin: 0px; background-color: #FCEF6A">Tic Tac Toe</h1>
+		<h1 style="margin-top: 3px;">Enter your details</h1>
+		<div class="input-field">
+			Player1 : <input class="text" type="text" name="player1">
+		</div>
+		<div class="input-field">
+			Player2 : <input class="text" type="text" name="player2">
+		</div>
+		<input class="submit-button" type="button" name="play" value="Start Game" onclick="play()">
 		<hr>
 	</div>
 	<div class="game">
-		<h4>Player 1 (O): <span id="name1"></span></h4>
-		<h4>Player 2 (X): <span id="name2"></span></h4>
+		<h1 style="text-align: center; margin: 0px; background-color: #FCEF6A">Tic Tac Toe</h1>
+		<div class="names">
+			<h4>Player 1 (O): &nbsp;<span id="name1"></span></h4>
+			<h4>Player 2 (X): &nbsp;<span id="name2"></span></h4>
+		</div>
 		<div class="matrix">
-			<input id="tic" type="button" name="0" value="&nbsp&nbsp&nbsp" onclick="playGame(0)">
-			<input id="tic" type="button" name="1" value="&nbsp&nbsp&nbsp" onclick="playGame(1)">
-			<input id="tic" type="button" name="2" value="&nbsp&nbsp&nbsp" onclick="playGame(2)"><br>
-			<input id="tic" type="button" name="3" value="&nbsp&nbsp&nbsp" onclick="playGame(3)">
-			<input id="tic" type="button" name="4" value="&nbsp&nbsp&nbsp" onclick="playGame(4)">
-			<input id="tic" type="button" name="5" value="&nbsp&nbsp&nbsp" onclick="playGame(5)"><br>
-			<input id="tic" type="button" name="6" value="&nbsp&nbsp&nbsp" onclick="playGame(6)">
-			<input id="tic" type="button" name="7" value="&nbsp&nbsp&nbsp" onclick="playGame(7)">
-			<input id="tic" type="button" name="8" value="&nbsp&nbsp&nbsp" onclick="playGame(8)">
+			<input class="box" id="tic" type="button" name="0" value="&nbsp&nbsp&nbsp" onclick="playGame(0)">
+			<input class="box" id="tic" type="button" name="1" value="&nbsp&nbsp&nbsp" onclick="playGame(1)">
+			<input class="box" id="tic" type="button" name="2" value="&nbsp&nbsp&nbsp" onclick="playGame(2)"><br>
+			<input class="box" id="tic" type="button" name="3" value="&nbsp&nbsp&nbsp" onclick="playGame(3)">
+			<input class="box" id="tic" type="button" name="4" value="&nbsp&nbsp&nbsp" onclick="playGame(4)">
+			<input class="box" id="tic" type="button" name="5" value="&nbsp&nbsp&nbsp" onclick="playGame(5)"><br>
+			<input class="box" id="tic" type="button" name="6" value="&nbsp&nbsp&nbsp" onclick="playGame(6)">
+			<input class="box" id="tic" type="button" name="7" value="&nbsp&nbsp&nbsp" onclick="playGame(7)">
+			<input class="box" id="tic" type="button" name="8" value="&nbsp&nbsp&nbsp" onclick="playGame(8)">
 		</div>
 		<br>
 		<h3 id="status">your turn => <span id="currPlayer"></span></h3>
-		<input type="button" name="reset" value="RESET" onclick="reset()">
-		<input type="button" name="undo" value="UNDO" onclick="undo()">
-		<input type="button" name="newGame" value="New Game" onclick="newGame()">
+		<div class="toolbar">
+			<input class="tool" id="reset" type="button" name="reset" value="RESET" onclick="reset()">
+			<input class="tool" id="undo" type="button" name="undo" value="UNDO" onclick="undo()">
+			<input class="tool" id="new" type="button" name="newGame" value="New Game" onclick="newGame()">
+		</div>
 	</div>
 	<script type="text/javascript">
 		var player1;
